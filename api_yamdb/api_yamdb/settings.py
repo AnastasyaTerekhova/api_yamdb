@@ -1,3 +1,5 @@
+import os
+from datetime import timedelta
 from pathlib import Path
 
 
@@ -21,6 +23,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'django_filters',
+    'api',
+    'reviews',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -85,7 +93,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-RU'
 
 TIME_ZONE = 'UTC'
 
@@ -101,3 +109,22 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = ((BASE_DIR / 'static/'),)
+
+CSV_FILES_DIR = os.path.join(BASE_DIR, 'static/data')
+
+AUTH_USER_MODEL = 'users.UserModel'
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'JWT_PAYLOAD_HANDLER': 'rest_framework_simplejwt.authentication.default_payload_handler',
+}
+
+SIMPLE_JWT = {
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+}
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
